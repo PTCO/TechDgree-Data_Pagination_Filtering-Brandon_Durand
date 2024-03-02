@@ -163,6 +163,7 @@ function addSearchBar(){
 
 }
 
+// Displays number Of results
 const numResultMsg = `<h3 class="ResultsNum">Results <b>${numOfResults}</b></h3>`;
 header.insertAdjacentHTML('beforeend', numResultMsg);
 
