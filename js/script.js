@@ -88,16 +88,16 @@ function addPagination(list){
       // Checks if Search Button is clicked
       if(e.target.tagName === 'BUTTON'){
 
-         link_list.firstElementChild.firstElementChild.className = ''
+         const btns = link_list.querySelectorAll('button');
 
-         showPage(data, e.target.textContent);
+         for(let x = 0; x < btns.length; x++){
 
-         e.target.className = 'active';
+            btns[x].className = '';
 
-         e.target.addEventListener('focusout', ()=>{
+            showPage(data, e.target.textContent);
 
-            e.target.className = '';
-         })
+            e.target.className = 'active';
+         }
 
       }
 
@@ -140,6 +140,10 @@ function addSearchBar(){
             showPage(Results, 1);
             addPagination(Results);  
          }
+         else if(searchInput === ''){ // Resets Students list when search bar is empty
+            showPage(data, 1);
+            addPagination(data);
+         }
          else {
             const resultMsg = `
                <h3 class="ResultMsg"> No Results Found </h3>
@@ -160,6 +164,7 @@ function addSearchBar(){
    document.querySelector('.student-search').addEventListener('keyup', e=>{
       Search(e);
    })
+
 
 }
 
