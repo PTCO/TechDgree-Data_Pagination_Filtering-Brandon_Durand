@@ -123,6 +123,10 @@ function addSearchBar(){
 
       const regex = /([^\d\s]+)/i;
 
+      const regex2 =/^[a-z]/g;
+
+      const regex3 = /^[A-Z][a-z]|[a-z][A-Z]$/
+
       let Results = [];
 
       if(e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT'){
@@ -131,7 +135,29 @@ function addSearchBar(){
 
          data.map((student)=>{
 
-            if(regex.test(searchInput) && student.name.first.toLowerCase().includes(searchInput.toLowerCase())){
+            const student_full_name = `${student.name.first} ${student.name.last}`;
+
+            /* 
+               If user input starts with A uppercase & lowercase, or vice versa character and  
+               student name includes input value, add student
+            */
+            if(regex3.test(searchInput) && student_full_name.toLowerCase().search(searchInput.toLowerCase()) !== -1){
+               Results.push(student);
+            }
+
+            /*
+               If user input first character is lowercase and  
+               student name includes input value, add student
+            */
+            else if(regex2.test(searchInput) && student_full_name.toLowerCase().search(searchInput) !== -1){
+               Results.push(student);
+            }
+
+
+            /*
+               If student name includes input value, add student
+            */
+            else if(regex.test(searchInput) && student_full_name.search(searchInput) !== -1){
                Results.push(student);
             }
          })
