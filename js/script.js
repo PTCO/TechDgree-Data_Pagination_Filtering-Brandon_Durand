@@ -94,7 +94,7 @@ function addPagination(list){
 
             btns[x].className = '';
 
-            showPage(data, e.target.textContent);
+            showPage(list, e.target.textContent);
 
             e.target.className = 'active';
          }
@@ -119,13 +119,9 @@ function addSearchBar(){
 
    // Function filters and returns students that match the user's seach query
    function Search(e){
-      const searchInput = document.querySelector('#search').value;
+      let searchInput = document.querySelector('#search').value;
 
       const regex = /([^\d\s]+)/i;
-
-      const regex2 =/^[a-z]/g;
-
-      const regex3 = /^[A-Z][a-z]|[a-z][A-Z]$/
 
       let Results = [];
 
@@ -133,31 +129,37 @@ function addSearchBar(){
 
          Results = [];
 
+         if(/\w([^a-z])/gm.test(searchInput)){
+
+            let string = [];
+
+            let chars = searchInput.split("");
+
+            chars.map((char, index)=>{
+
+               if(char === chars[index + 1]|| char.toUpperCase() === chars[index + 1] ){
+                 string.push(char.toLowerCase());
+               }
+               else if( index === 0){
+                  string.push(char);
+               }
+               else{
+                   string.push(char.toLowerCase());
+               }
+               
+            })
+
+
+            searchInput = string.join("");
+
+         }
+
          data.map((student)=>{
-
-            const student_full_name = `${student.name.first} ${student.name.last}`;
-
-            /* 
-               If user input starts with A uppercase & lowercase, or vice versa character and  
-               student name includes input value, add student
-            */
-            if(regex3.test(searchInput) && student_full_name.toLowerCase().search(searchInput.toLowerCase()) !== -1){
-               Results.push(student);
-            }
-
-            /*
-               If user input first character is lowercase and  
-               student name includes input value, add student
-            */
-            else if(regex2.test(searchInput) && student_full_name.toLowerCase().search(searchInput) !== -1){
-               Results.push(student);
-            }
-
-
             /*
                If student name includes input value, add student
             */
-            else if(regex.test(searchInput) && student_full_name.search(searchInput) !== -1){
+            if(regex.test(searchInput) && student.name.first.includes(searchInput) || student.name.last.includes(searchInput) || student.name.first.toLowerCase().includes(searchInput) || student.name.last.toLowerCase().includes(searchInput) ){
+
                Results.push(student);
             }
          })
